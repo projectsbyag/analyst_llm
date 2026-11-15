@@ -8,7 +8,7 @@
 ![License](https://img.shields.io/badge/License-MIT-09090B?style=flat-square)
 
 ---
-[Analyst_LLM Interface](./analyst_llm_shot1.png)
+![Analyst_LLM Interface](./analyst_llm_shot1.png)
 ## Why I Built This (The Problem)
 
 Most businesses do not have a data shortage—they have a **data-cleaning bottleneck**.
