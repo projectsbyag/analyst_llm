@@ -27,7 +27,7 @@ Before a business owner or analyst can answer a simple question like *"Which pro
 
 ---
 
-## How It Works (In Plain English)
+## How It Works
 
 Think of **`analyst_llm`** as a three-stage assembly line built specifically for tabular data:
 
@@ -39,52 +39,30 @@ Think of **`analyst_llm`** as a three-stage assembly line built specifically for
 
 ## System Design & Architecture
 
-```text
-+-----------------------------------------------------------------------------+
-|                        USER INPUT (COLAB STUDIO / WEB UI)                   |
-|               Raw CSV / XLSX Upload  +  Domain Schema Selection             |
-+--------------------------------------+--------------------------------------+
-                                       |
-                                       v
-+-----------------------------------------------------------------------------+
-|                    STAGE 1 // SCHEMA PROFILER & SANITIZER                   |
-|  Extracts column dtypes, null percentages & top 4 non-null sample values    |
-+--------------------------------------+--------------------------------------+
-                                       |
-                                       v
-+-----------------------------------------------------------------------------+
-|           STAGE 2 // CODE GENERATION ENGINE (T4 GPU / SERVERLESS)           |
-|  Qwen2.5-Coder-3B-Instruct + Merged QLoRA Adapter (merge_and_unload)        |
-|  - Pre-trained weights fetched automatically via Google Drive (`gdown`)     |
-|  - SDPA Attention + KV-Cache Enabled + Custom StoppingCriteria (max 10s)    |
-|  - Outputs deterministic `clean_and_analyze(df)` Python pipeline            |
-+--------------------------------------+--------------------------------------+
-                                       |
-                                       v
-+-----------------------------------------------------------------------------+
-|                  STAGE 3 // SELF-HEALING EXECUTION SANDBOX                  |
-|  Executes generated code in isolated namespace with runtime assertions      |
-|       |                                                       |             |
-|    [PASS]                                              [EXCEPTION]          |
-|       |                                                       |             |
-|       |                                                       v             |
-|       |                                       +-----------------------------+
-|       |                                       | Deterministic Fallback ETL  |
-|       |                                       | (Regex Currency/Date Cast,  |
-|       |                                       |  Dedup & Injection Filter)  |
-|       |                                       +---------------+-------------+
-|       +---------------------------+---------------------------+             |
-+-----------------------------------|-----------------------------------------+
-                                    |
-                                    v
-+-----------------------------------------------------------------------------+
-|           STAGE 4 // 10-CHART ENGINE & STAKEHOLDER EXECUTIVE BRIEF          |
-|  1. Clean CSV Export (`cleaned_output.csv`) + JSON Audit Trail              |
-|  2. 10 Interactive Monochrome Charts (5 Everyday + 5 Advanced Diagnostics)  |
-|  3. Plain-English Reasoning Trace, Segment Table & Action Playbook          |
-+-----------------------------------------------------------------------------+
-```
+```mermaid
+flowchart TD
+    A[Raw Spreadsheet Input<br/>CSV / XLSX + Domain Schema] --> B[Stage 1: Schema Profiler & Sanitizer<br/>Column Dtypes, Null % & Sample Extraction]
+    G[(Google Drive Adapter Store<br/>Qwen2.5-Coder-3B QLoRA Weights)] -->|Auto-Fetch via gdown| C
+    B --> C[Stage 2: Code Generation Engine<br/>Fused Float16 T4 GPU / Serverless API]
+    C --> D{Stage 3: Self-Healing Sandbox<br/>Isolated Execution & Assertions}
+    D -->|Pass| E[Verified Clean DataFrame<br/>& JSON Audit Metrics]
+    D -->|Exception / Guardrail Triggered| F[Deterministic Fallback ETL<br/>Currency/Date Cast, Dedup & Injection Filter]
+    F --> E
+    E --> H[Stage 4A: 10-Chart Visualization Engine<br/>5 Everyday Charts + 5 Advanced Diagnostics]
+    E --> I[Stage 4B: Statistical & Narrative Engine<br/>Plain-English Stakeholder Brief & Action Playbook]
+    H --> J[Studio Output<br/>cleaned_output.csv + Interactive Dashboard]
+    I --> J
 
+    style A fill:#FAFAFA,stroke:#09090B,stroke-width:1.5px,color:#09090B
+    style B fill:#FAFAFA,stroke:#09090B,stroke-width:1.5px,color:#09090B
+    style C fill:#09090B,stroke:#09090B,stroke-width:1.5px,color:#FFFFFF
+    style D fill:#FFFFFF,stroke:#09090B,stroke-width:2px,color:#09090B
+    style E fill:#FAFAFA,stroke:#09090B,stroke-width:1.5px,color:#09090B
+    style F fill:#F4F4F5,stroke:#09090B,stroke-width:1.5px,stroke-dasharray: 4 4,color:#09090B
+    style G fill:#FFFFFF,stroke:#09090B,stroke-width:1.5px,color:#09090B
+    style H fill:#FAFAFA,stroke:#09090B,stroke-width:1.5px,color:#09090B
+    style I fill:#FAFAFA,stroke:#09090B,stroke-width:1.5px,color:#09090B
+    style J fill:#09090B,stroke:#09090B,stroke-width:1.5px,color:#FFFFFF
 ---
 
 ## Key Features
