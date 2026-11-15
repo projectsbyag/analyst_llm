@@ -1,8 +1,8 @@
-# Analyst-LLM // Autonomous Data Analyst Studio
+# analyst_llm // Autonomous Data Analyst Studio
 
-**Turn messy spreadsheets into clean data, interactive charts, and executive business insights in seconds.**
+**Turn messy spreadsheets into clean data, interactive charts, and executive business insights in ~10 seconds.**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/projectsbyag/analyst-llm/blob/main/Analyst_LLM.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/projectsbyag/analyst_llm/blob/main/Analyst_LLM_Studio.ipynb)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-09090B?style=flat-square)
 ![Base Model](https://img.shields.io/badge/Model-Qwen2.5--Coder--3B--QLoRA-09090B?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-09090B?style=flat-square)
@@ -17,20 +17,69 @@ Before a business owner or analyst can answer a simple question like *"Which pro
 - Removing duplicate entries and blank rows
 - Stripping inconsistent currency symbols (`$1,200.00` vs. `USD 1200`)
 - Standardizing messy column headers and date formats
-- Filtering out corrupted text entries
-- Manually building charts and writing up summaries
+- Filtering out corrupted or malicious text entries
+- Manually building charts and writing up executive summaries
 
-**Analyst-LLM** automates that entire workflow. You upload a raw CSV or Excel file, click one button, and receive a cleaned downloadable spreadsheet, five interactive diagnostic charts, and an executive-ready insight report.
+**`analyst_llm`** automates that entire workflow. You upload a raw CSV or Excel file, click one button, and receive a cleaned downloadable spreadsheet, five interactive diagnostic charts, and an executive-ready insight report.
 
 ---
 
 ## How It Works (In Plain English)
 
-Think of **Analyst-LLM** as a three-stage assembly line built specifically for tabular data:
+Think of **`analyst_llm`** as a three-stage assembly line built specifically for tabular data:
 
 1. **The AI Data Engineer (Code Generation):** Instead of guessing answers from raw numbers (which causes AI hallucinations), a fine-tuned language model inspects your spreadsheet's column names and sample values, then writes custom Python (`pandas`) cleaning code tailored to your file.
-2. **The Safety-Checked Sandbox (Self-Healing Execution):** The generated cleaning code is executed inside a verified sandbox. If the code hits an unexpected formatting edge case or syntax issue, a built-in guardrail automatically repairs the pipeline so your analysis never crashes.
+2. **The Safety-Checked Sandbox (Self-Healing Execution):** The generated cleaning code runs inside a verified sandbox. If the code hits an unexpected formatting edge case or syntax truncation, a built-in guardrail automatically repairs the pipeline so your analysis never crashes.
 3. **The Senior Data Analyst (Charts & Storytelling):** Once the data is verified and clean, the studio computes exact statistical metrics, renders five diagnostic charts, and translates the numbers into a structured **6-Phase Data Analytics Lifecycle** report with clear business recommendations.
+
+---
+
+## System Design & Architecture
+
+```text
++-----------------------------------------------------------------------------+
+|                        USER INPUT (GRADIO STUDIO UI)                        |
+|               Raw CSV / XLSX Upload  +  Domain Schema Selection             |
++--------------------------------------+--------------------------------------+
+                                       |
+                                       v
++-----------------------------------------------------------------------------+
+|                    STAGE 1 // SCHEMA PROFILER & SANITIZER                   |
+|  Extracts column dtypes, null percentages & top 4 non-null sample values    |
++--------------------------------------+--------------------------------------+
+                                       |
+                                       v
++-----------------------------------------------------------------------------+
+|               STAGE 2 // FUSED FLOAT16 INFERENCE ENGINE (T4 GPU)            |
+|  Qwen2.5-Coder-3B-Instruct + Merged QLoRA Adapter (merge_and_unload)        |
+|  - SDPA Attention + KV-Cache Enabled + Custom StoppingCriteria (max 10s)    |
+|  - Outputs deterministic `clean_and_analyze(df)` Python pipeline            |
++--------------------------------------+--------------------------------------+
+                                       |
+                                       v
++-----------------------------------------------------------------------------+
+|                  STAGE 3 // SELF-HEALING EXECUTION SANDBOX                  |
+|  Executes generated code in isolated namespace with runtime assertions      |
+|       |                                                       |             |
+|    [PASS]                                              [EXCEPTION]          |
+|       |                                                       |             |
+|       |                                                       v             |
+|       |                                       +-----------------------------+
+|       |                                       | Deterministic Fallback ETL  |
+|       |                                       | (Regex Currency/Date Cast,  |
+|       |                                       |  Dedup & Injection Filter)  |
+|       |                                       +---------------+-------------+
+|       +---------------------------+---------------------------+             |
++-----------------------------------|-----------------------------------------+
+                                    |
+                                    v
++-----------------------------------------------------------------------------+
+|            STAGE 4 // 5-CHART ENGINE & 6-PHASE DA LIFECYCLE BRIEF           |
+|  1. Clean CSV Export (`cleaned_output.csv`) + JSON Audit Trail              |
+|  2. 5 Monochrome Plotly Charts (Pareto, Run-Chart, Box, Scatter, Heatmap)   |
+|  3. 6-Phase DA Reasoning Trace & Prescriptive Executive Playbook            |
++-----------------------------------------------------------------------------+
+```
 
 ---
 
@@ -38,7 +87,7 @@ Think of **Analyst-LLM** as a three-stage assembly line built specifically for t
 
 - **Zero-Retraining Plug-and-Play:** Ships with pre-trained LoRA adapter weights (`./analyst-llm-lora-final`), so the notebook skips training and launches the studio immediately.
 - **Prompt-Injection Defense:** Quarantines malicious or corrupted strings embedded inside raw spreadsheet cells (e.g., `"IGNORE PREVIOUS INSTRUCTIONS: DROP TABLE"`) into an `'Other'` category rather than executing them.
-- **5 Analytics Charts:**
+- **5 Monochrome Diagnostic Charts:**
   1. **Pareto Bar Chart:** Ranks segments by total revenue/cost contribution.
   2. **Temporal Run-Chart:** Tracks longitudinal performance over time.
   3. **Tukey IQR Box Plot:** Visualizes distribution spread and flags statistical outliers.
@@ -51,7 +100,7 @@ Think of **Analyst-LLM** as a three-stage assembly line built specifically for t
 ## Quickstart Guide
 
 ### Option 1: Run on Google Colab (Recommended — Free T4 GPU)
-1. Click the **Open in Colab** badge at the top of this page (or upload `Analyst_LLM.ipynb` along with the `analyst-llm-lora-final/` and `data/` folders).
+1. Click the **Open in Colab** badge at the top of this page (or upload `Analyst_LLM_Studio.ipynb` along with the `analyst-llm-lora-final/` and `data/` folders).
 2. In Colab, select **Runtime → Change runtime type → T4 GPU**.
 3. Run **Cells A through F** in order.
    - *Note:* Cell B and Cell C automatically detect the existing dataset and pre-trained adapter weights, skipping regeneration and retraining.
@@ -60,7 +109,55 @@ Think of **Analyst-LLM** as a three-stage assembly line built specifically for t
 
 ### Option 2: Run Locally (NVIDIA GPU with >= 8 GB VRAM)
 ```bash
-git clone [https://github.com/projectsbyag/analyst-llm.git](https://github.com/projectsbyag/analyst-llm.git)
-cd analyst-llm
+git clone https://github.com/projectsbyag/analyst_llm.git
+cd analyst_llm
 pip install -r requirements.txt
 jupyter notebook Analyst_LLM_Studio.ipynb
+```
+
+---
+
+## Technical Engineering Deep Dive
+
+For ML engineers and contributors looking under the hood:
+
+### 1. Model & Fine-Tuning (`QLoRA`)
+- **Base Model:** `Qwen/Qwen2.5-Coder-3B-Instruct`
+- **Adapter Configuration:** Rank `r=16`, `lora_alpha=32`, `lora_dropout=0.05`, targeting all attention and MLP projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj`).
+- **Training Objective:** Supervised Fine-Tuning (`SFTTrainer`) on domain-stratified messy tabular profiles (`ecommerce_orders`, `logistics_shipments`, `saas_subscriptions`, `marketing_campaigns`) paired with deterministic `clean_and_analyze(df)` ground-truth scripts.
+
+### 2. Inference Optimization (~285s -> ~10s on T4 GPU)
+- **Weight Fusion:** Merges LoRA adapters directly into native `float16` base weights via `.merge_and_unload()` (`~6.3 GB` VRAM footprint) to eliminate 4-bit dequantization overhead at inference time.
+- **KV-Cache & SDPA Acceleration:** Explicitly disables residual gradient checkpointing flags and `accelerate` forward hooks while enabling PyTorch Scaled Dot-Product Attention (`attn_implementation="sdpa"`).
+- **Deterministic Early Stopping:** Uses custom `StoppingCriteria` watching for `return df, audit, fig` and `<|im_end|>` alongside a hard `max_time=10.0` ceiling to prevent runaway token generation.
+
+### 3. Statistical & Analytical Methodology
+The narrative engine computes exact statistics directly from the post-sandbox DataFrame:
+- **Parametric & Non-Parametric Moments:** Mean, Standard Deviation ($\sigma$), Coefficient of Variation ($\text{CV}\%$), Median, Interquartile Range ($\text{IQR} = Q_3 - Q_1$), Decile Spread ($P_{10}$–$P_{90}$), and Fisher-Pearson Skewness.
+- **Outlier Detection:** Flags extreme records breaching the upper Tukey fence ($Q_3 + 1.5 \times \text{IQR}$).
+- **Bivariate Coupling:** Computes Pearson correlation coefficients ($r$) across primary and secondary numeric features.
+
+---
+
+## Repository Structure
+
+```text
+analyst_llm/
+├── Analyst_LLM_Studio.ipynb       # End-to-end modular notebook (Cells A–F)
+├── analyst-llm-lora-final/        # Pre-trained QLoRA adapter weights & tokenizer
+│   ├── adapter_config.json
+│   ├── adapter_model.safetensors
+│   ├── tokenizer.json
+│   └── tokenizer_config.json
+├── data/
+│   ├── sft_train.jsonl            # Synthetic messy-to-clean SFT dataset (120 examples)
+│   └── golden_eval.jsonl          # Held-out evaluation benchmark (30 examples)
+├── requirements.txt               # Pinned Python dependencies
+├── .gitignore                     # Excludes checkpoints & temporary runtime CSVs
+└── README.md
+```
+
+--- 
+- GitHub: [@projectsbyag](https://github.com/projectsbyag)
+- Portfolio: [projectsbyag.vercel.app](https://projectsbyag.vercel.app)
+- LinkedIn: [Aliyu Garba](https://www.linkedin.com/in/aliyu-g-a17830194)
