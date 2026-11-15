@@ -2,7 +2,7 @@
 
 **Turn messy spreadsheets into clean data, interactive charts, and executive business insights in seconds.**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/projectsbyag/analyst_llm/blob/main/Analyst_LLM_Studio.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/projectsbyag/analyst_llm/blob/main/analyst_llm.ipynb)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-09090B?style=flat-square)
 ![Base Model](https://img.shields.io/badge/Model-Qwen2.5--Coder--3B--QLoRA-09090B?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-09090B?style=flat-square)
@@ -113,7 +113,7 @@ Think of **`analyst_llm`** as a three-stage assembly line built specifically for
 git clone [https://github.com/projectsbyag/analyst_llm.git](https://github.com/projectsbyag/analyst_llm.git)
 cd analyst_llm
 pip install -r requirements.txt gdown
-jupyter notebook Analyst_LLM_Studio.ipynb
+jupyter notebook analyst_llm.ipynb
 ```
 *(Running Cell A will automatically fetch the pre-trained adapter weights into `./analyst-llm-lora-final/`.)*
 
@@ -145,7 +145,7 @@ The narrative engine computes exact statistics directly from the post-sandbox Da
 
 ```text
 analyst_llm/
-├── Analyst_LLM_Studio.ipynb       # End-to-end modular notebook (Cells A–F)
+├── analyst_llm.ipynb       # End-to-end modular notebook (Cells A–F)
 ├── data/
 │   ├── sft_train.jsonl            # Synthetic messy-to-clean SFT dataset (120 examples)
 │   └── golden_eval.jsonl          # Held-out evaluation benchmark (30 examples)
@@ -155,12 +155,3 @@ analyst_llm/
 ```
 
 *(Note: The `./analyst-llm-lora-final/` weights directory is hosted externally on [Google Drive](https://drive.google.com/drive/folders/1tzgWZSKZfY1ZNO5ZWlzPIsuP7dN0yJro?usp=drive_link) to keep the repository lightweight and is populated automatically when running Cell A.)*
-
----
-
-## Author
-
-Built by **Aliyu Garba** — Software & Applied AI Engineer  
-- GitHub: [@projectsbyag](https://github.com/projectsbyag)
-- Portfolio: [projectsbyag.vercel.app](https://projectsbyag.vercel.app)
-- LinkedIn: [Aliyu Garba](https://www.linkedin.com/in/aliyu-g-a17830194)
