@@ -1,4 +1,4 @@
-# analyst_llm // Autonomous Data Analyst Studio
+# Analyst_LLM // Autonomous Data Analyst Studio
 
 **Turn messy spreadsheets into clean data, interactive charts, and executive business insights in seconds.**
 
