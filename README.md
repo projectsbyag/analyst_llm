@@ -1,6 +1,6 @@
 # Analyst-LLM // Autonomous Data Analyst Studio
 
-**Turn messy spreadsheets into clean data, interactive charts, and executive business insights in ~10 seconds.**
+**Turn messy spreadsheets into clean data, interactive charts, and executive business insights in seconds.**
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/projectsbyag/analyst-llm/blob/main/Analyst_LLM_Studio.ipynb)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-09090B?style=flat-square)
