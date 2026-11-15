@@ -2,7 +2,7 @@
 
 **Turn messy spreadsheets into clean data, interactive charts, and executive business insights in seconds.**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/projectsbyag/analyst-llm/blob/main/Analyst_LLM_Studio.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/projectsbyag/analyst-llm/blob/main/Analyst_LLM.ipynb)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-09090B?style=flat-square)
 ![Base Model](https://img.shields.io/badge/Model-Qwen2.5--Coder--3B--QLoRA-09090B?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-09090B?style=flat-square)
@@ -51,7 +51,7 @@ Think of **Analyst-LLM** as a three-stage assembly line built specifically for t
 ## Quickstart Guide
 
 ### Option 1: Run on Google Colab (Recommended — Free T4 GPU)
-1. Click the **Open in Colab** badge at the top of this page (or upload `Analyst_LLM_Studio.ipynb` along with the `analyst-llm-lora-final/` and `data/` folders).
+1. Click the **Open in Colab** badge at the top of this page (or upload `Analyst_LLM.ipynb` along with the `analyst-llm-lora-final/` and `data/` folders).
 2. In Colab, select **Runtime → Change runtime type → T4 GPU**.
 3. Run **Cells A through F** in order.
    - *Note:* Cell B and Cell C automatically detect the existing dataset and pre-trained adapter weights, skipping regeneration and retraining.
